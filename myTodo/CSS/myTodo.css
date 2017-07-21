@@ -15,7 +15,6 @@ h1 {
   height: 56px;
   border-right: 0;
   border-style: inset;
-  outline:none;
   padding: 12px;
   border-bottom: 0;
   border-radius:20px 0px 0px 20px;
@@ -41,7 +40,7 @@ h1 {
 
 #features {
   display: inline-block;
-  width: 400px;
+  width: 390px;
   background-color: white;
   border-style: groove;
   border-top-style: none;
@@ -50,19 +49,44 @@ h1 {
   box-shadow: -1px 5px 1px rgba(216, 212, 212, 0.46);
 }
 
-#left-things {
+#things-number {
   display: inline-block;
   margin-right: 20px;
-  font-size: 10px;
+  font-size: 15px;
+  color: rgba(144, 152, 147, 0.76);
 }
 
 #buttons {
   margin-right: 18px;
 }
 
+#buttons button {
+  background-color: white;
+  border-style: none;
+  outline-color: #ec7c5c;
+  color: rgba(144, 152, 147, 0.76);
+  border: 1px solid white;
+}
+
+#buttons button:hover {
+  background-color: white;
+  border: 1px solid rgb(248, 193, 145);
+  color: rgb(119, 117, 117);
+}
+
+#buttons button:active {
+  background-color: white;
+  border: 1px solid rgb(248, 193, 145);
+}
+
+#buttons button:focus {
+  background-color: white;
+  color: rgb(99, 94, 94);
+}
+
 .aThing {
   display: inline-block;
-  width: 400px;
+  width: 390px;
   background-color: white;
   border-style: groove;
   border-top-style: none;
@@ -97,7 +121,14 @@ h1 {
 
 #clear {
   font-size: 5px;
-  display: inline-block;
+  color: rgba(144, 152, 147, 0.76);
+  text-decoration: none;
+}
+
+#clear:hover {
+  color: rgb(99, 94, 94);
+  text-decoration: underline;
+  text-shadow: 1px 2px 5px rgb(238, 185, 145);
 }
 
 .has-done {
@@ -117,7 +148,16 @@ h1 {
   text-shadow: 2px 0px 0px #dad8d8;
 }
 
+.show {
+  display: '';
+}
+
+.hidden {
+  display: none;
+}
+
 footer {
   line-height: 150px;
   color: rgba(255, 173, 42, 0.79);
 }
+

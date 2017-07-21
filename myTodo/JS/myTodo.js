@@ -107,8 +107,6 @@ EventUtil.addHandler(window, 'load', function() {
     spanNumber.firstChild.nodeValue = number;
   };
 
-
-
   /*添加事件*/
   EventUtil.addHandler(input, 'keydown', function(event) {
     event = EventUtil.getEvent(event);
@@ -148,6 +146,8 @@ EventUtil.addHandler(window, 'load', function() {
         target.nextSibling.classList.remove("has-done");
       }
     } 
+
+    showClear();
   }); 
 
   /*功能按钮*/
@@ -207,9 +207,8 @@ EventUtil.addHandler(window, 'load', function() {
         childCircleI,
         childCircleJ,
         i,
-        j,
-        n = 0;
-    
+        j;
+      debugger;
     for (i = 0; i < len; i++) {
       childCircleI = showThings.childNodes[i].firstChild.firstChild;
 
@@ -219,8 +218,11 @@ EventUtil.addHandler(window, 'load', function() {
           childCircleJ = showThings.childNodes[j].firstChild.firstChild;
           if (!childCircleJ.hasChildNodes()) {
             childCircleJ.appendChild(document.createTextNode('√'));
+            childCircleJ.classList.add('choose');
+            childCircleJ.nextSibling.classList.add('has-done');
           } 
         } 
+        
         break;
       } 
     }
@@ -230,8 +232,12 @@ EventUtil.addHandler(window, 'load', function() {
       for (i = 0; i < len; i++) {
         childCircleI = showThings.childNodes[i].firstChild.firstChild;
         childCircleI.removeChild(childCircleI.firstChild);
+        childCircleI.classList.remove("choose");
+        childCircleI.nextSibling.classList.remove("has-done");
       } 
     } 
+
+    showClear();
   });
 
   /*清除已完成项*/
@@ -242,12 +248,36 @@ EventUtil.addHandler(window, 'load', function() {
         if (childCircle.hasChildNodes()) {
           showThings.removeChild(showThings.childNodes[i]);
         }
+    }
+
+    showHidden.hidden();
+    showClear();
+  });
+
+  /*显隐全部清理按钮*/
+  var showClear = function() {
+   var len = showThings.childNodes.length,
+          childCircleI,
+          i;
+      
+      //有选中的事项
+      for (i = 0; i < len; i++) {
+        childCircleI = showThings.childNodes[i].firstChild.firstChild;
+        if (childCircleI.hasChildNodes()) {
+          if (clearButton.classList.contains('hidden')) {
+            clearButton.classList.remove('hidden');
+          }
+          break;
+        } 
       }
 
-    if (!showThings.hasChildNodes()) {
-    }
-  });
- 
+      //没有被选中的事项
+      if (i == len) {
+        if (!clearButton.classList.contains('hidden')) {
+          clearButton.classList.add('hidden');
+        }
+      } 
+  };
 });
 
 
