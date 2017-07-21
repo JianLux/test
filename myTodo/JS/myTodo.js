@@ -45,7 +45,7 @@ var deleteSign = function() {
   return div;
 }
 
-/*事件处理函数*/
+/*添加事件函数*/
 var addThings = function(addThing) {
   if (addThing) {
     var div = document.createElement('div');
@@ -62,6 +62,19 @@ var addThings = function(addThing) {
     p.className = 'aThing';
     father.appendChild(div);
   }
+};
+
+/*显示数量*/
+var showNumber = function(things) {
+  var spanNumber = document.getElementById('number');
+  var number = 0;
+  var length = things.childNodes.length;
+  for (var i = 0; i < length; i++) {
+    if (things.childNodes[i].style.display != 'none') {
+      number++;
+    }
+  }
+  spanNumber.firstChild.nodeValue = number;
 };
 
 EventUtil.addHandler(window, 'load', function() {
@@ -85,6 +98,8 @@ EventUtil.addHandler(window, 'load', function() {
         features.style.visibility = 'visible';
       }
     }
+
+    showNumber(showThings);
   });
 
   /*删除事件*/  
@@ -101,6 +116,8 @@ EventUtil.addHandler(window, 'load', function() {
         features.style.visibility = 'hidden';
       }
     }
+
+    showNumber(showThings);
   }); 
 
   /*标记事件*/  
@@ -162,8 +179,11 @@ EventUtil.addHandler(window, 'load', function() {
         }
         break;
     }
+
+    showNumber(showThings);
   });
 
+ 
 });
 
 
