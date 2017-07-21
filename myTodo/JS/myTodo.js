@@ -83,6 +83,7 @@ EventUtil.addHandler(window, 'load', function() {
   var features = document.getElementById('features');
   var showThings = document.getElementById('show-things');
   var features = document.getElementById('features');
+  var button = document.getElementById('button');
 
   /*添加事件*/
   EventUtil.addHandler(input, 'keydown', function(event) {
@@ -153,7 +154,7 @@ EventUtil.addHandler(window, 'load', function() {
       case 'active':
         for (i = 0; i < len; i++) {
           childCircle = parent[i].firstChild.firstChild;
-          if (childCircle.childNodes.length) {
+          if (childCircle.hasChildNodes()) {
             if (parent[i].style.display != 'none') {
               parent[i].style.display = 'none';
             }           
@@ -167,7 +168,7 @@ EventUtil.addHandler(window, 'load', function() {
       case 'completed':
         for (i = 0; i < len; i++) {
           childCircle = parent[i].firstChild.firstChild;
-          if (!childCircle.childNodes.length) {
+          if (!childCircle.hasChildNodes()) {
             if (parent[i].style.display != 'none') {
               parent[i].style.display = 'none';
             }
@@ -183,6 +184,37 @@ EventUtil.addHandler(window, 'load', function() {
     showNumber(showThings);
   });
 
+  EventUtil.addHandler(button, 'click', function() {
+    var len = showThings.childNodes.length,
+        childCircleI,
+        childCircleJ,
+        i,
+        j,
+        n = 0;
+    
+    for (i = 0; i < len; i++) {
+      childCircleI = showThings.childNodes[i].firstChild.firstChild;
+
+      //有没被选中的事件，选中它
+      if (!childCircleI.hasChildNodes()) {
+        for (j = 0; j < len; j++) {
+          childCircleJ = showThings.childNodes[j].firstChild.firstChild;
+          if (!childCircleJ.hasChildNodes()) {
+            childCircleJ.appendChild(document.createTextNode('√'));
+          } 
+        } 
+        break;
+      } 
+    }
+
+    //全部被选中时，取消选中
+    if (i == len) {
+      for (i = 0; i < len; i++) {
+        childCircleI = showThings.childNodes[i].firstChild.firstChild;
+        childCircleI.removeChild(childCircleI.firstChild);
+      } 
+    } 
+  });
  
 });
 
