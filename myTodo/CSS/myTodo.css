@@ -92,12 +92,29 @@ h1 {
 .deleteSign {
   padding-right: 20px;
   float: right;
-  color: rgba(115, 110, 110, 0.78);
+  color: rgba(232, 125, 117, 0.51);
 }
 
 #clear {
   font-size: 5px;
   display: inline-block;
+}
+
+.has-done {
+  color: #bbb3b3;
+  text-decoration: line-through;
+  text-decoration-color: #887b7b;
+}
+
+.choose {
+  color: #42f107;
+  font-size: 25px;
+  font-family: -webkit-pictograph;
+}
+
+.deleteSign:hover {
+  color: rgba(255, 89, 77, 0.95);
+  text-shadow: 2px 0px 0px #dad8d8;
 }
 
 footer {

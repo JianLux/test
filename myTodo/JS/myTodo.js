@@ -137,11 +137,15 @@ EventUtil.addHandler(window, 'load', function() {
   EventUtil.addHandler(showThings, 'click', function(event) {
     event = EventUtil.getEvent(event);
     var target = EventUtil.getTarget(event);
-    if (target.className == 'circle') {
+    if (target.classList.contains('circle')) {
       if (target.childNodes.length == 0) {
         target.appendChild(document.createTextNode('√'));  // 标记
+        target.classList.add("choose");
+        target.nextSibling.classList.add("has-done");
       } else {
         target.removeChild(target.firstChild);  // 取消标记
+        target.classList.remove("choose");
+        target.nextSibling.classList.remove("has-done");
       }
     } 
   }); 
@@ -239,8 +243,8 @@ EventUtil.addHandler(window, 'load', function() {
           showThings.removeChild(showThings.childNodes[i]);
         }
       }
-    if (!showThings.hasChildNodes()) {
 
+    if (!showThings.hasChildNodes()) {
     }
   });
  
