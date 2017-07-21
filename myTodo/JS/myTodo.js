@@ -113,6 +113,9 @@ EventUtil.addHandler(window, 'load', function() {
     if (event.keyCode == 13) {
       addThings(input.value);
       input.value = '';
+      if (showThings.firstChild.classList.contains('com')) {
+        showThings.lastChild.style.display = 'none';
+       }
     }
 
     showHidden.show();
@@ -153,6 +156,9 @@ EventUtil.addHandler(window, 'load', function() {
   /*功能按钮*/
   EventUtil.addHandler(features, 'click', function(event) {
     event = EventUtil.getEvent(event);
+    var all = document.getElementById('all');
+    var active = document.getElementById('active');
+    var completed = document.getElementById('completed');
     var target = EventUtil.getTarget(event);
     var parent = showThings.childNodes,
       len = parent.length,
@@ -160,13 +166,19 @@ EventUtil.addHandler(window, 'load', function() {
       i;  
 
     switch (target.id) {
-
       case 'all': 
         for (i = 0; i < len; i++) {
           if (parent[i].style.display = 'none') {
             parent[i].style.display = '';
           }
+          if (parent[i].classList.contains('com')) {
+            parent[i].classList.remove('com');
+          }       
         }
+
+        active.classList.remove('border');
+        completed.classList.remove('border');
+        target.classList.add('border');
         break;
       case 'active':
         for (i = 0; i < len; i++) {
@@ -180,7 +192,15 @@ EventUtil.addHandler(window, 'load', function() {
               parent[i].style.display = '';
               }     
           }
+          
+          if (parent[i].classList.contains('com')) {
+            parent[i].classList.remove('com');
+          }      
         }
+
+        all.classList.remove('border');
+        completed.classList.remove('border');
+        target.classList.add('border');
         break;
       case 'completed':
         for (i = 0; i < len; i++) {
@@ -194,7 +214,14 @@ EventUtil.addHandler(window, 'load', function() {
               parent[i].style.display = '';
               } 
           }
+
+          if (parent[i].classList.contains('com')) {
+            parent[i].classList.remove('com');
+          }      
         }
+        active.classList.remove('border');
+        all.classList.remove('border');
+        target.classList.add('border');
         break;
     }
 
@@ -208,7 +235,7 @@ EventUtil.addHandler(window, 'load', function() {
         childCircleJ,
         i,
         j;
-      debugger;
+
     for (i = 0; i < len; i++) {
       childCircleI = showThings.childNodes[i].firstChild.firstChild;
 
