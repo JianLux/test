@@ -64,18 +64,7 @@ var addThings = function(addThing) {
   }
 };
 
-/*显示数量*/
-var showNumber = function(things) {
-  var spanNumber = document.getElementById('number');
-  var number = 0;
-  var length = things.childNodes.length;
-  for (var i = 0; i < length; i++) {
-    if (things.childNodes[i].style.display != 'none') {
-      number++;
-    }
-  }
-  spanNumber.firstChild.nodeValue = number;
-};
+
 
 EventUtil.addHandler(window, 'load', function() {
 
@@ -84,6 +73,41 @@ EventUtil.addHandler(window, 'load', function() {
   var showThings = document.getElementById('show-things');
   var features = document.getElementById('features');
   var button = document.getElementById('button');
+  var clearButton = document.getElementById('clear');
+  var spanNumber = document.getElementById('number');
+
+  /*功能框显隐函数*/
+  var showHidden = {
+    show: function() {
+      if (features.style.visibility = 'hidden') {
+        if (showThings.hasChildNodes()) {
+          features.style.visibility = 'visible';
+        }
+      }
+    },
+
+    hidden: function() {
+      if (features.style.visibility = 'visible') {
+        if (!showThings.hasChildNodes()) {
+          features.style.visibility = 'hidden';
+        }
+      }
+    }
+  };
+
+  /*显示数量函数*/
+  var showNumber = function(things) {    
+    var number = 0;
+    var length = things.childNodes.length;
+    for (var i = 0; i < length; i++) {
+      if (things.childNodes[i].style.display != 'none') {
+        number++;
+      }
+    }
+    spanNumber.firstChild.nodeValue = number;
+  };
+
+
 
   /*添加事件*/
   EventUtil.addHandler(input, 'keydown', function(event) {
@@ -93,13 +117,7 @@ EventUtil.addHandler(window, 'load', function() {
       input.value = '';
     }
 
-    /*功能框显示*/
-    if (features.style.visibility = 'hidden') {
-      if (showThings.childNodes.length) {
-        features.style.visibility = 'visible';
-      }
-    }
-
+    showHidden.show();
     showNumber(showThings);
   });
 
@@ -111,13 +129,7 @@ EventUtil.addHandler(window, 'load', function() {
       showThings.removeChild(target.parentNode.parentNode);
     } 
 
-    /*功能框隐藏*/
-    if (features.style.visibility = 'visible') {
-      if (showThings.childNodes.length == 0) {
-        features.style.visibility = 'hidden';
-      }
-    }
-
+    showHidden.hidden();
     showNumber(showThings);
   }); 
 
@@ -134,6 +146,7 @@ EventUtil.addHandler(window, 'load', function() {
     } 
   }); 
 
+  /*功能按钮*/
   EventUtil.addHandler(features, 'click', function(event) {
     event = EventUtil.getEvent(event);
     var target = EventUtil.getTarget(event);
@@ -184,6 +197,7 @@ EventUtil.addHandler(window, 'load', function() {
     showNumber(showThings);
   });
 
+  /*全选按钮*/
   EventUtil.addHandler(button, 'click', function() {
     var len = showThings.childNodes.length,
         childCircleI,
@@ -214,6 +228,20 @@ EventUtil.addHandler(window, 'load', function() {
         childCircleI.removeChild(childCircleI.firstChild);
       } 
     } 
+  });
+
+  /*清除已完成项*/
+  EventUtil.addHandler(clearButton, 'click', function() {
+    var len = showThings.childNodes.length;
+    for (var i = len-1; i >= 0; i--) {
+        var childCircle = showThings.childNodes[i].firstChild.firstChild;
+        if (childCircle.hasChildNodes()) {
+          showThings.removeChild(showThings.childNodes[i]);
+        }
+      }
+    if (!showThings.hasChildNodes()) {
+
+    }
   });
  
 });
