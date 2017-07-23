@@ -215,8 +215,8 @@ EventUtil.addHandler(window, 'load', function() {
               } 
           }
 
-          if (parent[i].classList.contains('com')) {
-            parent[i].classList.remove('com');
+          if (!parent[i].classList.contains('com')) {
+            parent[i].classList.add('com');
           }      
         }
         active.classList.remove('border');
@@ -258,9 +258,11 @@ EventUtil.addHandler(window, 'load', function() {
     if (i == len) {
       for (i = 0; i < len; i++) {
         childCircleI = showThings.childNodes[i].firstChild.firstChild;
-        childCircleI.removeChild(childCircleI.firstChild);
+        if (!showThings.childNodes[i].classList.contains('com')) {
+                  childCircleI.removeChild(childCircleI.firstChild);
         childCircleI.classList.remove("choose");
         childCircleI.nextSibling.classList.remove("has-done");
+        }
       } 
     } 
 
@@ -305,6 +307,27 @@ EventUtil.addHandler(window, 'load', function() {
         }
       } 
   };
+
+  EventUtil.addHandler(showThings, 'dblclick', function(event) {
+    event = EventUtil.getEvent(event);
+    var target = EventUtil.getTarget(event);
+
+    if (target.className == 'text') {
+      var content = target.firstChild.nodeValue;
+
+      target.setAttribute('contenteditable','true');
+      document.execCommand('justifyleft', false, null);
+      document.getSelection().collapseToEnd();
+
+      EventUtil.addHandler(target, 'keydown', function(event) {
+        event = EventUtil.getEvent(event);
+        if (event.keyCode == 13) {
+          target.setAttribute('contenteditable','false');
+        }
+      });    
+    }
+
+  });
 });
 
 

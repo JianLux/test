@@ -12,12 +12,14 @@ h1 {
 }
 
 #button {
+  font-size: 25px;
+  color: rgb(140, 138, 134);
   height: 56px;
   border-right: 0;
   border-style: inset;
   padding: 12px;
-  border-bottom: 0;
   border-radius:20px 0px 0px 20px;
+  outline:none; /*去掉点击时的亮框*/
 }
 
 #input {
@@ -29,7 +31,6 @@ h1 {
   border-radius:0px 20px 20px 0px;
   border-left-style: none;
   outline:none; /*去掉输入时的亮框*/
-  vertical-align: middle;
 }
 
 #input-things {
@@ -93,7 +94,6 @@ button {
   border-style: groove;
   border-top-style: none;
   margin: 0;
-  padding: 10px 0px 10px 0px;
   border-bottom-style: ridge;
   border-bottom-color: rgba(255, 248, 220, 0.3);
   text-align: left;
@@ -101,7 +101,10 @@ button {
 }
 
 .text {
-  display: inline;
+  display: inline-block;
+  vertical-align: middle;
+  outline:none;
+  width: 300px;
 }
 
 .circle {
@@ -110,13 +113,12 @@ button {
   width: 20px;
   vertical-align: middle;
   border: 1px solid rgb(93, 78, 67);
-  margin: 0px 10px 0px 10px;
-  float: left;
+  margin: 10px 10px 10px 10px;
   text-align: center;
 }
 
 .deleteSign {
-  padding-right: 20px;
+  margin: 10px 20px 10px 10px;
   float: right;
   color: rgba(232, 125, 117, 0.51);
 }
