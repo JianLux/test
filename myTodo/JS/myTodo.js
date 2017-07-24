@@ -45,6 +45,14 @@ var deleteSign = function() {
   return div;
 }
 
+/*优先级标志*/
+var prioritySign = function() {
+  var div = document.createElement('div');
+  div.appendChild(document.createTextNode('☆'));
+  div.className = 'prioritySign';
+  return div;
+}
+
 /*添加事件函数*/
 var addThings = function(addThing) {
   if (addThing) {
@@ -56,11 +64,15 @@ var addThings = function(addThing) {
     p2.appendChild(text);
     p.appendChild(circle());
     p.appendChild(p2);
+    p.appendChild(prioritySign());
     p.appendChild(deleteSign());
     div.appendChild(p);
     p2.className = 'text';
     p.className = 'aThing';
     father.appendChild(div);
+    
+    //保存数据
+    // save(storage, div, div);
   }
 };
 
@@ -75,13 +87,14 @@ EventUtil.addHandler(window, 'load', function() {
   var button = document.getElementById('button');
   var clearButton = document.getElementById('clear');
   var spanNumber = document.getElementById('number');
+  var body = document.getElementsByTagName('body');
+  // var storage = getLocalStorage(); 
 
   /*功能框显隐函数*/
   var showHidden = {
     show: function() {
       if (features.style.visibility = 'hidden') {
         if (showThings.hasChildNodes()) {
-          features.style.visibility = 'visible';
         }
       }
     },
@@ -110,16 +123,18 @@ EventUtil.addHandler(window, 'load', function() {
   /*添加事件*/
   EventUtil.addHandler(input, 'keydown', function(event) {
     event = EventUtil.getEvent(event);
-    if (event.keyCode == 13) {
+    if (event && input.value != '' && event.keyCode == 13) {
       addThings(input.value);
+
+
       input.value = '';
       if (showThings.firstChild.classList.contains('com')) {
         showThings.lastChild.style.display = 'none';
        }
     }
 
-    showHidden.show();
-    showNumber(showThings);
+    showHidden.show();  //功能框显隐
+    showNumber(showThings); //计数器
   });
 
   /*删除事件*/  
@@ -134,7 +149,7 @@ EventUtil.addHandler(window, 'load', function() {
     showNumber(showThings);
   }); 
 
-  /*标记事件*/  
+  /*标记完成事件*/  
   EventUtil.addHandler(showThings, 'click', function(event) {
     event = EventUtil.getEvent(event);
     var target = EventUtil.getTarget(event);
@@ -152,6 +167,71 @@ EventUtil.addHandler(window, 'load', function() {
 
     showClear();
   }); 
+
+  /*标记优先级事件*/
+  EventUtil.addHandler(showThings, 'click', function(event) {
+    event = EventUtil.getEvent(event);
+    var target = EventUtil.getTarget(event);
+    var thisNode = target.parentNode.parentNode;
+
+    if (target.classList.contains('prioritySign')){
+
+      if (target.classList.contains('priority')) {
+        target.firstChild.nodeValue = '☆';
+        target.classList.remove('priority');  
+        target.parentNode.classList.remove('priorityThing');
+        showThings.insertBefore(thisNode, null)
+    
+      } else {
+        target.firstChild.nodeValue = '★';
+        target.classList.add('priority');
+        target.parentNode.classList.add('priorityThing');
+        showThings.insertBefore(thisNode, showThings.firstChild)
+      }
+
+    // if (target.classList.contains('prioritySign')){
+
+    //   if (target.classList.contains('priority')) {
+    //     target.firstChild.nodeValue = '☆';
+    //     target.classList.remove('priority');
+          
+    //     while(thisNode.nextSibling != showThings.lastChild) {
+    //         nextNode = thisNode.nextSibling;
+
+    //         if (nextNode.firstChild.classList.contains('priorityThing')) {
+
+    //         temp = nextNode.firstChild.innerHTML;
+    //         nextNode.firstChild.innerHTML = thisNode.firstChild.innerHTML;
+    //         thisNode.firstChild.innerHTML = temp;
+
+    //         thisNode = nextNode;
+    //         nextNode.firstChild.classList.remove('priorityThing');
+    //         } 
+    //      } 
+    //   } else {
+    //     target.firstChild.nodeValue = '★';
+    //     target.classList.add('priority');
+
+    //     for (i = 0; i < showThings.childNodes.length; i++) {
+    //       p = showThings.childNodes[i].firstChild;
+    //       //检测子div中的p是否含有该类
+    //       if (!p.classList.contains('priorityThing')) {
+    //         temp = p.innerHTML;
+    //         p.innerHTML = target.parentNode.innerHTML;
+    //         target.parentNode.innerHTML = temp;
+    //         p.classList.add('priorityThing');
+    //         break;
+    //       } else if (i == showThings.childNodes.length-1) {
+    //         target.parentNode.classList.add('priorityThing');
+    //       }
+    //     }
+    //   }
+
+    }
+
+
+
+  })
 
   /*功能按钮*/
   EventUtil.addHandler(features, 'click', function(event) {
@@ -313,22 +393,52 @@ EventUtil.addHandler(window, 'load', function() {
     var target = EventUtil.getTarget(event);
 
     if (target.className == 'text') {
-      var content = target.firstChild.nodeValue;
 
       target.setAttribute('contenteditable','true');
-      document.execCommand('justifyleft', false, null);
-      document.getSelection().collapseToEnd();
+      document.getSelection().collapse(target.firstChild, target.firstChild.length);
 
-      EventUtil.addHandler(target, 'keydown', function(event) {
-        event = EventUtil.getEvent(event);
-        if (event.keyCode == 13) {
-          target.setAttribute('contenteditable','false');
-        }
+      // EventUtil.addHandler(target, 'keydown', function(event) {
+      //   event = EventUtil.getEvent(event);
+
+      //   if (event && event.keyCode == 13) {
+      //     target.setAttribute('contenteditable','false');
+      //   }
+
+      //   if (event.ctrlKey && event.keyCode == 13) {
+      //     target.innerHTML = target.innerHTML + "\n";
+      //     document.getSelection().collapse(target.firstChild, target.firstChild.length);
+      //     target.setAttribute('contenteditable','true');
+      //   }
+          // });  
+
+      EventUtil.addHandler(body[0], 'click', function() {
+        target.setAttribute('contenteditable','false');
       });    
-    }
-
+     }
   });
 });
+
+// //存储
+// function getLocalStorage() {
+//   if (typeof localStorage == 'object') {
+//     return localStorage;
+//   } else if (typeof globalStorage == 'object') {
+//     return globalStorage[location.host];
+//   } else {
+//     throw new Error('local storage not available.');
+//   }
+// }
+
+// //储存数据
+// var save = function(storage, name, value) {
+//   storage.setItem(name, value);
+// }
+
+// //删除数据
+// var deleted = function(storage, name) {
+//   storage.removeItem(name);
+// }
+
 
 
 

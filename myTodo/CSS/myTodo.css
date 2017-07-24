@@ -88,7 +88,6 @@ button {
 }
 
 .aThing {
-  display: inline-block;
   width: 390px;
   background-color: white;
   border-style: groove;
@@ -98,13 +97,14 @@ button {
   border-bottom-color: rgba(255, 248, 220, 0.3);
   text-align: left;
   word-wrap:break-word;
+  display: none;
 }
 
 .text {
   display: inline-block;
   vertical-align: middle;
   outline:none;
-  width: 300px;
+  width: 279px;
 }
 
 .circle {
@@ -118,10 +118,20 @@ button {
 }
 
 .deleteSign {
-  margin: 10px 20px 10px 10px;
+  display: inline-block;
+  margin: 14.5px 20px 10px 10px;
   float: right;
   color: rgba(232, 125, 117, 0.51);
+  font-size: 22px;
 }
+
+.prioritySign {
+  display: inline-block;
+  color: rgba(232, 125, 117, 0.51);
+  font-size: 30px;
+  vertical-align: middle;
+}
+
 
 #clear {
   font-size: 5px;
@@ -152,6 +162,19 @@ button {
   text-shadow: 2px 0px 0px #dad8d8;
 }
 
+.prioritySign:hover {
+  color: rgba(255, 89, 77, 0.95);
+  text-shadow: 2px 0px 0px #dad8d8;
+}
+
+.priority {
+  color: rgba(255, 89, 77, 0.95);
+}
+
+.priorityThing {
+  background-color: rgb(245, 243, 241);
+}
+
 .show {
   display: '';
 }
@@ -164,4 +187,3 @@ footer {
   line-height: 150px;
   color: rgba(255, 173, 42, 0.79);
 }
-
