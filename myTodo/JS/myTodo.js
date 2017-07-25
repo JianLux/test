@@ -1,3 +1,13 @@
+function getLocalStroage() {
+  if (typeof localStorage == 'object') {
+    return localStorage;
+  } else if (typeof globalStorage == 'object') {
+    return globalStorage[location.host];
+  } else {
+    throw new Error('Local storage not available.');
+  }
+}
+
 var EventUtil = {
   getEvent: function(event) {
     return event ? event : window.event;
@@ -89,7 +99,18 @@ EventUtil.addHandler(window, 'load', function() {
   var clearButton = document.getElementById('clear');
   var spanNumber = document.getElementById('number');
   var body = document.getElementsByTagName('body');
+  var storage = getLocalStroage();
+  var name = storage.getItem("user");
+  var signOut = document.getElementById('signOut');
  
+  /*显示登录用户*/
+  if (name) {
+    var welcome = document.getElementById('welcome');
+    welcome.innerHTML = "<p class='hello'>Hello " + name + "!</p><p>Today, you want to do what?</p>";   
+    signOut.innerHTML = '注销';
+  }
+  
+  
 
   /*功能框显隐函数*/
   var showHidden = {
@@ -145,8 +166,9 @@ EventUtil.addHandler(window, 'load', function() {
     var target = EventUtil.getTarget(event);
     if (target.className == 'deleteSign') {
 
-      $(target.parentNode).fadeOut();
-      setTimeout("showThings.removeChild(target.parentNode.parentNode);", 30 )
+      // $(target.parentNode).fadeOut();
+      showThings.removeChild(target.parentNode.parentNode);
+
     } 
 
     showHidden.hidden();
@@ -420,6 +442,41 @@ EventUtil.addHandler(window, 'load', function() {
       });    
      }
   });
+
+//   $.ajax({
+//     url: "./sign.html",
+//     async: false,
+//     deta:["userName": "123",
+//           "password": "123"]
+//   });
+
+//   $(document).ready(function(){
+//   htmlobj=$.ajax({url:"/../user.txt",async:false});
+//   $("#welcome").html(htmlobj.responseText);
+// });
+
+  
+  EventUtil.addHandler(signOut, 'click', function() {
+    if (signOut.innerHTML == '注销') {
+      var hello = document.getElementsByClassName('hello');
+      storage.user = '';
+      welcome.innerHTML = "<p>Hello!</p><p>MyTodo only save things when you loigned!</p>";
+      signOut.innerHTML = '登录';
+    } else {
+      window.location.href='./sign.html';
+    }
+    
+  });
+
+
+
+
+
+
+
+
+
+
 });
 
 

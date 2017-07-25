@@ -64,3 +64,13 @@ input {
 	height: 38px;
 	color: #565656;
 }
+
+a[href="../HTML/myTodo.html"] {
+	text-decoration: none;
+	color: rgb(205, 201, 196);
+}
+
+a[href="../HTML/myTodo.html"]:hover {
+	text-decoration: underline;
+	color: rgb(100, 100, 100);
+}

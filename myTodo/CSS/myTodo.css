@@ -9,6 +9,7 @@ h1 {
   text-shadow: 5px 1px 10px #dad8d8;
   line-height: 1px;
   color: rgba(255, 98, 0, 0.33);
+  display: inline-block;
 }
 
 #button {
@@ -185,4 +186,25 @@ button {
 
 footer { 
   color: rgba(255, 173, 42, 0.79);
+}
+
+.hello {
+  font-size: 22px;
+/*  background-color: rgb(220, 212, 196);*/
+  background-color: rgba(186, 158, 103, 0.53);
+  display: inline;
+  color: #f6f6f6;
+  padding: 5px;
+}
+
+#signOut {
+  vertical-align: -webkit-baseline-middle;
+  color: white;
+  background-color: aquamarine;
+  border-radius: 50%;
+  text-decoration: none;
+}
+
+#welcome {
+  margin-top: 50px;
 }

@@ -51,10 +51,12 @@ EventUtil.addHandler(window, 'load', function() {
     var name = userName.value;
     var password = userPassword.value;
     
-    switch(target.id) {
+    if (name) {
+      switch(target.id) {
       case 'signIn':
 
         if (storage.getItem(name) == password) {
+          storage.setItem("user", name);
           alert("登录成功！正在跳转...");
           window.location.href='./myTodo.html';
 
@@ -68,13 +70,17 @@ EventUtil.addHandler(window, 'load', function() {
           alert("该用户已注册。");
         } else {
           storage.setItem(name, password);
+          storage.setItem("user", name);
           alert(storage.getItem(name));
           alert("用户注册成功！正在登录...");
           window.location.href='./myTodo.html';
         }
 
         break;
+     }
     }
+    
   });
+
 
 });
