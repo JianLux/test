@@ -104,7 +104,7 @@ button {
   display: inline-block;
   vertical-align: middle;
   outline:none;
-  width: 279px;
+  width: 250px;
 }
 
 .circle {
@@ -183,7 +183,6 @@ button {
   display: none;
 }
 
-footer {
-  line-height: 150px;
+footer { 
   color: rgba(255, 173, 42, 0.79);
 }

@@ -70,9 +70,10 @@ var addThings = function(addThing) {
     p2.className = 'text';
     p.className = 'aThing';
     father.appendChild(div);
-    
-    //保存数据
-    // save(storage, div, div);
+
+    $(".aThing").fadeIn(500);
+    $(".aThing").css({display: "inline-block"});
+
   }
 };
 
@@ -88,13 +89,14 @@ EventUtil.addHandler(window, 'load', function() {
   var clearButton = document.getElementById('clear');
   var spanNumber = document.getElementById('number');
   var body = document.getElementsByTagName('body');
-  // var storage = getLocalStorage(); 
+ 
 
   /*功能框显隐函数*/
   var showHidden = {
     show: function() {
       if (features.style.visibility = 'hidden') {
         if (showThings.hasChildNodes()) {
+          features.style.visibility = 'visible';
         }
       }
     },
@@ -142,7 +144,9 @@ EventUtil.addHandler(window, 'load', function() {
     event = EventUtil.getEvent(event);
     var target = EventUtil.getTarget(event);
     if (target.className == 'deleteSign') {
-      showThings.removeChild(target.parentNode.parentNode);
+
+      $(target.parentNode).fadeOut();
+      setTimeout("showThings.removeChild(target.parentNode.parentNode);", 30 )
     } 
 
     showHidden.hidden();
@@ -418,27 +422,25 @@ EventUtil.addHandler(window, 'load', function() {
   });
 });
 
-// //存储
-// function getLocalStorage() {
-//   if (typeof localStorage == 'object') {
-//     return localStorage;
-//   } else if (typeof globalStorage == 'object') {
-//     return globalStorage[location.host];
-//   } else {
-//     throw new Error('local storage not available.');
-//   }
-// }
+function loadXMLDoc() {
+var xmlhttp;
+if (window.XMLHttpRequest) {
+  xmlhttp=new XMLHttpRequest();
+} else {
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlhttp.onreadystatechange = function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("welcome").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("post","../user.txt?Hello=name",true);
+xmlhttp.send();
+}
 
-// //储存数据
-// var save = function(storage, name, value) {
-//   storage.setItem(name, value);
-// }
-
-// //删除数据
-// var deleted = function(storage, name) {
-//   storage.removeItem(name);
-// }
-
+loadXMLDoc();
 
 
 
