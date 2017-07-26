@@ -67,18 +67,18 @@ var prioritySign = function() {
 var addThings = function(addThing) {
   if (addThing) {
     var div = document.createElement('div');
+    var div2 = document.createElement('div');
     var p = document.createElement('p');
-    var p2 = document.createElement('p');
     var father = document.getElementById('show-things');
     var text = document.createTextNode(addThing)
-    p2.appendChild(text);
-    p.appendChild(circle());
-    p.appendChild(p2);
-    p.appendChild(prioritySign());
-    p.appendChild(deleteSign());
-    div.appendChild(p);
-    p2.className = 'text';
-    p.className = 'aThing';
+    p.appendChild(text);
+    div2.appendChild(circle());
+    div2.appendChild(p);
+    div2.appendChild(prioritySign());
+    div2.appendChild(deleteSign());
+    div.appendChild(div2);
+    p.className = 'text';
+    div2.className = 'aThing';
     father.appendChild(div);
 
     $(".aThing").fadeIn(500);
@@ -102,6 +102,7 @@ EventUtil.addHandler(window, 'load', function() {
   var storage = getLocalStroage();
   var name = storage.getItem("user");
   var signOut = document.getElementById('signOut');
+
  
   /*显示登录用户*/
   if (name) {
@@ -142,6 +143,28 @@ EventUtil.addHandler(window, 'load', function() {
     }
     spanNumber.firstChild.nodeValue = number;
   };
+  
+  //存在用户名就读取信息
+  if (name) {
+    $.ajax({
+      type:"get",
+      url: "http://localhost:3000/users/" + name,
+      async: false,
+      dataType: "json",
+      success: function(deta) {
+        var things = deta.things;
+        if (things) {
+          showThings.innerHTML = things;
+
+          showHidden.show();  //功能框显隐
+          showNumber(showThings); //计数器
+        }
+      }
+    });
+  }
+    
+
+
 
   /*添加事件*/
   EventUtil.addHandler(input, 'keydown', function(event) {
@@ -154,8 +177,12 @@ EventUtil.addHandler(window, 'load', function() {
       if (showThings.firstChild.classList.contains('com')) {
         showThings.lastChild.style.display = 'none';
        }
+
+       setTimeout(function(){save();}, 500); //保存数据
+       
     }
 
+    
     showHidden.show();  //功能框显隐
     showNumber(showThings); //计数器
   });
@@ -166,9 +193,13 @@ EventUtil.addHandler(window, 'load', function() {
     var target = EventUtil.getTarget(event);
     if (target.className == 'deleteSign') {
 
-      // $(target.parentNode).fadeOut();
-      showThings.removeChild(target.parentNode.parentNode);
+      $(target.parentNode).fadeOut(500);
+      setTimeout(function(){
+        showThings.removeChild(target.parentNode.parentNode);
+      }, 500)
+      
 
+      save(); //保存数据
     } 
 
     showHidden.hidden();
@@ -214,50 +245,8 @@ EventUtil.addHandler(window, 'load', function() {
         target.parentNode.classList.add('priorityThing');
         showThings.insertBefore(thisNode, showThings.firstChild)
       }
-
-    // if (target.classList.contains('prioritySign')){
-
-    //   if (target.classList.contains('priority')) {
-    //     target.firstChild.nodeValue = '☆';
-    //     target.classList.remove('priority');
-          
-    //     while(thisNode.nextSibling != showThings.lastChild) {
-    //         nextNode = thisNode.nextSibling;
-
-    //         if (nextNode.firstChild.classList.contains('priorityThing')) {
-
-    //         temp = nextNode.firstChild.innerHTML;
-    //         nextNode.firstChild.innerHTML = thisNode.firstChild.innerHTML;
-    //         thisNode.firstChild.innerHTML = temp;
-
-    //         thisNode = nextNode;
-    //         nextNode.firstChild.classList.remove('priorityThing');
-    //         } 
-    //      } 
-    //   } else {
-    //     target.firstChild.nodeValue = '★';
-    //     target.classList.add('priority');
-
-    //     for (i = 0; i < showThings.childNodes.length; i++) {
-    //       p = showThings.childNodes[i].firstChild;
-    //       //检测子div中的p是否含有该类
-    //       if (!p.classList.contains('priorityThing')) {
-    //         temp = p.innerHTML;
-    //         p.innerHTML = target.parentNode.innerHTML;
-    //         target.parentNode.innerHTML = temp;
-    //         p.classList.add('priorityThing');
-    //         break;
-    //       } else if (i == showThings.childNodes.length-1) {
-    //         target.parentNode.classList.add('priorityThing');
-    //       }
-    //     }
-    //   }
-
     }
-
-
-
-  })
+  });
 
   /*功能按钮*/
   EventUtil.addHandler(features, 'click', function(event) {
@@ -394,24 +383,24 @@ EventUtil.addHandler(window, 'load', function() {
    var len = showThings.childNodes.length,
           childCircleI,
           i;
-      
-      //有选中的事项
-      for (i = 0; i < len; i++) {
-        childCircleI = showThings.childNodes[i].firstChild.firstChild;
-        if (childCircleI.hasChildNodes()) {
-          if (clearButton.classList.contains('hidden')) {
-            clearButton.classList.remove('hidden');
-          }
-          break;
-        } 
-      }
-
-      //没有被选中的事项
-      if (i == len) {
-        if (!clearButton.classList.contains('hidden')) {
-          clearButton.classList.add('hidden');
+    
+    //有选中的事项
+    for (i = 0; i < len; i++) {
+      childCircleI = showThings.childNodes[i].firstChild.firstChild;
+      if (childCircleI.hasChildNodes()) {
+        if (clearButton.classList.contains('hidden')) {
+          clearButton.classList.remove('hidden');
         }
+        break;
       } 
+    }
+
+    //没有被选中的事项
+    if (i == len) {
+      if (!clearButton.classList.contains('hidden')) {
+        clearButton.classList.add('hidden');
+      }
+    } 
   };
 
   EventUtil.addHandler(showThings, 'dblclick', function(event) {
@@ -443,23 +432,13 @@ EventUtil.addHandler(window, 'load', function() {
      }
   });
 
-//   $.ajax({
-//     url: "./sign.html",
-//     async: false,
-//     deta:["userName": "123",
-//           "password": "123"]
-//   });
-
-//   $(document).ready(function(){
-//   htmlobj=$.ajax({url:"/../user.txt",async:false});
-//   $("#welcome").html(htmlobj.responseText);
-// });
 
   
   EventUtil.addHandler(signOut, 'click', function() {
     if (signOut.innerHTML == '注销') {
       var hello = document.getElementsByClassName('hello');
       storage.user = '';
+      name = '';
       welcome.innerHTML = "<p>Hello!</p><p>MyTodo only save things when you loigned!</p>";
       signOut.innerHTML = '登录';
     } else {
@@ -468,18 +447,56 @@ EventUtil.addHandler(window, 'load', function() {
     
   });
 
+//如果存在名字保存数据
+var save = function() {
+  if (name) {
+    $.ajax({
+      type:"put",
+      url: "http://localhost:3000/users/" + name,
+      async: true,
+      dataType: "json",
+      data:{
+            "async": true,
+            "things": showThings.innerHTML
+           }
+    });
+  }
+}
 
-
-
-
-
-
+    
 
 
 
 });
 
 
+// EventUtil.addHandler(window, 'onbeforeunload', function() {
+//   $.ajax({
+//       type:"put",
+//       url: "http://localhost:3000/" + name,
+//       async: false,
+//       dataType: "json",
+//       data:{
+//             "async": true,
+//             "things": showThings.innerHTML
+//             // name: {}
+//            }
+//     });
+//   alert("close");
+//   return "da as das ";
+// });
+
+// window.onbeforeunload = function (e) {
+//   e = e || window.event;
+
+//   // 兼容IE8和Firefox 4之前的版本
+//   if (e) {
+//     e.returnValue = '关闭提示';
+//   }
+
+//   // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+//   return '关闭提示';
+// };
 
 
 

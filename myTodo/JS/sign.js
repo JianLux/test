@@ -71,7 +71,19 @@ EventUtil.addHandler(window, 'load', function() {
         } else {
           storage.setItem(name, password);
           storage.setItem("user", name);
-          alert(storage.getItem(name));
+
+          //保存用户名
+          $.ajax({
+            type:"post",
+            url: "http://localhost:3000/users",
+            async: false,
+            dataType: "json",
+            data:{ 
+              
+              id: name        
+            }
+          });
+
           alert("用户注册成功！正在登录...");
           window.location.href='./myTodo.html';
         }
