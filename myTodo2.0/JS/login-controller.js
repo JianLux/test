@@ -1,190 +1,47 @@
-function getLocalStroage() {
-  if (typeof localStorage == 'object') {
-    return localStorage;
-  } else if (typeof globalStorage == 'object') {
-    return globalStorage[location.host];
-  } else {
-    throw new Error('Local storage not available.');
-  }
-}
-
-var EventUtil = {
-  getEvent: function(event) {
-    return event ? event : window.event;
-  },
-
-  addHandler: function(element, type, handler) {
-    if (element.addEventListener) {
-      element.addEventListener(type, handler, false);
-    } else if (element.attachEvent) {
-      element.attachEvent("on" + type, handler);
-    } else {
-      element["on" + type] = handler;
-    }
-  },
-
-  removeHandler: function(element, type, handler) {
-    if (element.removeEventListener) {
-      element.removeEventListener(type, handler, false);
-    } else if (element.detachEvent) {
-      element.detachEvent("on" + type, handler);
-    } else {
-      element["on" + type] = null;
-    }
-  },
-
-  getTarget: function(event) {
-    return event.target || window.srcElement;
-  }
-
-};
-
-/*圆圈标志*/
-var circle = function() {
-  var div = document.createElement('div');
-  div.className = 'circle';
-  div.style.borderRadius = '50%';
-  return div;
-}
-
-/*删除标志*/
-var deleteSign = function() {
-  var div = document.createElement('div');
-  div.appendChild(document.createTextNode('X'));
-  div.className = 'deleteSign';
-  return div;
-}
-
-/*优先级标志*/
-var prioritySign = function() {
-  var div = document.createElement('div');
-  div.appendChild(document.createTextNode('☆'));
-  div.className = 'prioritySign';
-  return div;
-}
-
-/*添加事件函数*/
-var addThings = function(addThing) {
-  if (addThing) {
-    var div = document.createElement('div');
-    var div2 = document.createElement('div');
-    var p = document.createElement('p');
-    var father = document.getElementById('show-things');
-    var text = document.createTextNode(addThing)
-    p.appendChild(text);
-    div2.appendChild(circle());
-    div2.appendChild(p);
-    div2.appendChild(prioritySign());
-    div2.appendChild(deleteSign());
-    div.appendChild(div2);
-    p.className = 'text';
-    div2.className = 'aThing';
-    father.appendChild(div);
-
-    $(".aThing").fadeIn(500);
-    $(".aThing").css({display: "inline-block"});
-
-  }
-};
-
-
-
-EventUtil.addHandler(window, 'load', function() {
-
-  var input = document.getElementById('input');
-  var features = document.getElementById('features');
-  var showThings = document.getElementById('show-things');
-  var features = document.getElementById('features');
-  var button = document.getElementById('button');
-  var clearButton = document.getElementById('clear');
-  var spanNumber = document.getElementById('number');
-  var body = document.getElementsByTagName('body');
-  var storage = getLocalStroage();
-  var name = storage.getItem("user");
-  var signOut = document.getElementById('signOut');
-
- 
-  /*显示登录用户*/
-  if (name) {
-    var welcome = document.getElementById('welcome');
-    welcome.innerHTML = "<p class='hello'>Hello " + name + "!</p><p>Today, you want to do what?</p>";   
-    signOut.innerHTML = '注销';
-  }
-  
-  
-
-  /*功能框显隐函数*/
-  var showHidden = {
-    show: function() {
-      if (features.style.visibility = 'hidden') {
-        if (showThings.hasChildNodes()) {
-          features.style.visibility = 'visible';
-        }
-      }
-    },
-
-    hidden: function() {
-      if (features.style.visibility = 'visible') {
-        if (!showThings.hasChildNodes()) {
-          features.style.visibility = 'hidden';
-        }
-      }
-    }
-  };
-
-  /*显示数量函数*/
-  var showNumber = function(things) {    
-    var number = 0;
-    var length = things.childNodes.length;
-    for (var i = 0; i < length; i++) {
-      if (things.childNodes[i].style.display != 'none') {
-        number++;
-      }
-    }
-    spanNumber.firstChild.nodeValue = number;
-  };
-  
-  //存在用户名就读取信息
-  if (name) {
-    $.ajax({
-      type:"get",
-      url: "http://localhost:3000/users/" + name,
-      async: false,
-      dataType: "json",
-      success: function(deta) {
-        var things = deta.things;
-        if (things) {
-          showThings.innerHTML = things;
-
-          showHidden.show();  //功能框显隐
-          showNumber(showThings); //计数器
-        }
-      }
-    });
-  }
+MVC.controller = function () {
     
+  var V = MVC.view;
+  var M = MVC.model;
 
+  var C = {
+    start: function () {
+      V.initTodo();  // 初始化视图
+      this.__listen();
+    },    
 
-
+    __listen: function () {      
+        var input = document.getElementById('input');
+        var features = document.getElementById('features');
+        var showThings = document.getElementById('show-things');
+        var features = document.getElementById('features');
+        var allChoose = document.getElementById('allChoose');
+        var clearButton = document.getElementById('clear');
+        var spanNumber = document.getElementById('number');
+        var body = document.getElementsByTagName('body');
+        var storage = getLocalStroage();
+        var name = storage.getItem("user");
+        var signOut = document.getElementById('signOut');
+        
   /*添加事件*/
   EventUtil.addHandler(input, 'keydown', function(event) {
     event = EventUtil.getEvent(event);
-    if (event && input.value != '' && event.keyCode == 13) {
-      addThings(input.value);
+    if (input.value) {
+      if (event && event.keyCode == 13) {
+        V.addThings(input.value); //添加
+        V.clearInput(); //清空输入框
 
+        
 
-      input.value = '';
-      if (showThings.firstChild.classList.contains('com')) {
-        showThings.lastChild.style.display = 'none';
-       }
+        setTimeout(function(){
 
-       setTimeout(function(){save();}, 500); //保存数据
+          M.saveThings();  //保存信息到json
+          V.showFeature();  //功能框显隐
+          V.showNumber(showThings); //计数器
+           
+        }, 500); 
        
+      }
     }
-
-    
-    showHidden.show();  //功能框显隐
-    showNumber(showThings); //计数器
   });
 
   /*删除事件*/  
@@ -195,18 +52,19 @@ EventUtil.addHandler(window, 'load', function() {
 
       $(target.parentNode).fadeOut(500);
       setTimeout(function(){
+        debugger;
         showThings.removeChild(target.parentNode.parentNode);
-      }, 500)
-      
+        save(); //保存数据
 
-      save(); //保存数据
+        showHidden.hidden();
+        showNumber(showThings);
+
+      }, 500);      
     } 
 
-    showHidden.hidden();
-    showNumber(showThings);
   }); 
 
-  /*标记完成事件*/  
+      /*标记完成事件*/  
   EventUtil.addHandler(showThings, 'click', function(event) {
     event = EventUtil.getEvent(event);
     var target = EventUtil.getTarget(event);
@@ -324,7 +182,7 @@ EventUtil.addHandler(window, 'load', function() {
   });
 
   /*全选按钮*/
-  EventUtil.addHandler(button, 'click', function() {
+  EventUtil.addHandler(allChoose, 'click', function() {
     var len = showThings.childNodes.length,
         childCircleI,
         childCircleJ,
@@ -403,6 +261,8 @@ EventUtil.addHandler(window, 'load', function() {
     } 
   };
 
+
+  /*修改文本*/
   EventUtil.addHandler(showThings, 'dblclick', function(event) {
     event = EventUtil.getEvent(event);
     var target = EventUtil.getTarget(event);
@@ -412,24 +272,25 @@ EventUtil.addHandler(window, 'load', function() {
       target.setAttribute('contenteditable','true');
       document.getSelection().collapse(target.firstChild, target.firstChild.length);
 
-      // EventUtil.addHandler(target, 'keydown', function(event) {
-      //   event = EventUtil.getEvent(event);
 
-      //   if (event && event.keyCode == 13) {
-      //     target.setAttribute('contenteditable','false');
-      //   }
-
-      //   if (event.ctrlKey && event.keyCode == 13) {
-      //     target.innerHTML = target.innerHTML + "\n";
-      //     document.getSelection().collapse(target.firstChild, target.firstChild.length);
-      //     target.setAttribute('contenteditable','true');
-      //   }
-          // });  
-
-      EventUtil.addHandler(body[0], 'click', function() {
+      // EventUtil.addHandler(body[0], 'click', function() {
+      //   target.setAttribute('contenteditable','false');
+      // });    
+     
+      EventUtil.addHandler(target, 'focusout', function() {
         target.setAttribute('contenteditable','false');
-      });    
+        if (!target.contentText) {
+          showThings.removeChild(target.parentNode.parentNode);
+
+          showHidden.hidden();
+          showNumber(showThings);
+        }
+      });   
      }
+
+
+
+
   });
 
 
@@ -447,69 +308,17 @@ EventUtil.addHandler(window, 'load', function() {
     
   });
 
-//如果存在名字保存数据
-var save = function() {
-  if (name) {
-    $.ajax({
-      type:"put",
-      url: "http://localhost:3000/users/" + name,
-      async: true,
-      dataType: "json",
-      data:{
-            "async": true,
-            "things": showThings.innerHTML
-           }
-    });
-  }
-}
-
-    
 
 
 
-});
+    }  
+  }  
 
+  return C;
 
-// EventUtil.addHandler(window, 'onbeforeunload', function() {
-//   $.ajax({
-//       type:"put",
-//       url: "http://localhost:3000/" + name,
-//       async: false,
-//       dataType: "json",
-//       data:{
-//             "async": true,
-//             "things": showThings.innerHTML
-//             // name: {}
-//            }
-//     });
-//   alert("close");
-//   return "da as das ";
-// });
+}()
 
-// window.onbeforeunload = function (e) {
-//   e = e || window.event;
-
-//   // 兼容IE8和Firefox 4之前的版本
-//   if (e) {
-//     e.returnValue = '关闭提示';
-//   }
-
-//   // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-//   return '关闭提示';
-// };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+var C = MVC.controller;
+C.start();
 
 

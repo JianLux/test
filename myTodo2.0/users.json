@@ -1,0 +1,8 @@
+{
+  "users": [
+    {
+      "things": "<div><div class=\"aThing priorityThing\" style=\"display: inline-block;\"><div class=\"circle\" style=\"border-radius: 50%;\"></div><p class=\"text\">456</p><div class=\"prioritySign priority\">★</div><div class=\"deleteSign\">X</div></div></div><div class=\"com\"><div class=\"aThing\" style=\"display: inline-block;\"><div class=\"circle choose\" style=\"border-radius: 50%;\">√</div><p class=\"text has-done\">321</p><div class=\"prioritySign\">☆</div><div class=\"deleteSign\">X</div></div></div>",
+      "id": "123"
+    }
+  ]
+}

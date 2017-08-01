@@ -1,0 +1,210 @@
+body {
+  text-align: center;
+  background-color: rgba(255, 235, 59, 0.19);
+}
+
+h1 {
+  font-size: 110px;
+  font-family: MS Mincho, DFKai-SB;
+  text-shadow: 5px 1px 10px #dad8d8;
+  line-height: 1px;
+  color: rgba(255, 98, 0, 0.33);
+  display: inline-block;
+}
+
+#allChoose {
+  font-size: 25px;
+  color: rgb(140, 138, 134);
+  height: 56px;
+  border-right: 0;
+  border-style: inset;
+  padding: 12px;
+  border-radius:20px 0px 0px 20px;
+  outline:none; /*去掉点击时的亮框*/
+}
+
+#input {
+  padding: 12px;
+  box-shadow: 0px 18px 90px rgba(251, 174, 13, 0.42);
+  color: rgba(56, 43, 42, 0.78);
+  font-size:25px;
+  width:400px;
+  border-radius:0px 20px 20px 0px;
+  border-left-style: none;
+  outline:none; /*去掉输入时的亮框*/
+}
+
+#input-things {
+  display: inline-block;
+  background-color: white;
+  border-radius: 20px 20px 20px 20px;
+}
+
+#features {
+  display: inline-block;
+  width: 390px;
+  background-color: white;
+  border-style: groove;
+  border-top-style: none;
+  border-radius:0px 0px 20px 20px;
+  visibility: hidden;
+  box-shadow: -1px 5px 1px rgba(216, 212, 212, 0.46);
+}
+
+#things-number {
+  display: inline-block;
+  margin-right: 20px;
+  font-size: 15px;
+  color: rgba(144, 152, 147, 0.76);
+}
+
+#buttons {
+  margin-right: 18px;
+}
+
+button {
+  background-color: white;
+  border-style: none;
+  outline-color: #ec7c5c;
+  color: rgba(144, 152, 147, 0.76);
+  border: 1px solid white;
+}
+
+#buttons button:hover {
+  background-color: white;
+  border: 1px solid rgb(248, 193, 145);
+  color: rgb(119, 117, 117);
+}
+
+#buttons button:active {
+  background-color: white;
+  border: 1px solid rgb(248, 193, 145);
+}
+
+.border {
+  background-color: white;
+  border: 1px solid rgb(248, 193, 145);
+  color: rgb(119, 117, 117);
+  outline: none;
+}
+
+.aThing {
+  width: 390px;
+  background-color: white;
+  border-style: groove;
+  border-top-style: none;
+  margin: 0;
+  border-bottom-style: ridge;
+  border-bottom-color: rgba(255, 248, 220, 0.3);
+  text-align: left;
+  word-wrap:break-word;
+  display: none;
+}
+
+.text {
+  display: inline-block;
+  vertical-align: middle;
+  outline:none;
+  width: 250px;
+}
+
+.circle {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+  border: 1px solid rgb(93, 78, 67);
+  margin: 10px 10px 10px 10px;
+  text-align: center;
+}
+
+.deleteSign {
+  display: inline-block;
+  margin: 14.5px 20px 10px 10px;
+  float: right;
+  color: rgba(232, 125, 117, 0.51);
+  font-size: 22px;
+}
+
+.prioritySign {
+  display: inline-block;
+  color: rgba(232, 125, 117, 0.51);
+  font-size: 30px;
+  vertical-align: middle;
+}
+
+
+#clear {
+  font-size: 5px;
+  color: rgba(144, 152, 147, 0.76);
+  text-decoration: none;
+}
+
+#clear:hover {
+  color: rgb(99, 94, 94);
+  text-decoration: underline;
+  text-shadow: 1px 2px 5px rgb(238, 185, 145);
+}
+
+.has-done {
+  color: #bbb3b3;
+  text-decoration: line-through;
+  text-decoration-color: #887b7b;
+}
+
+.choose {
+  color: #42f107;
+  font-size: 25px;
+  font-family: -webkit-pictograph;
+}
+
+.deleteSign:hover {
+  color: rgba(255, 89, 77, 0.95);
+  text-shadow: 2px 0px 0px #dad8d8;
+}
+
+.prioritySign:hover {
+  color: rgba(255, 89, 77, 0.95);
+  text-shadow: 2px 0px 0px #dad8d8;
+}
+
+.priority {
+  color: rgba(255, 89, 77, 0.95);
+}
+
+.priorityThing {
+  background-color: rgb(245, 243, 241);
+}
+
+.show {
+  display: '';
+}
+
+.hidden {
+  display: none;
+}
+
+footer { 
+  color: rgba(255, 173, 42, 0.79);
+}
+
+.hello {
+  font-size: 22px;
+/*  background-color: rgb(220, 212, 196);*/
+  background-color: rgba(186, 158, 103, 0.53);
+  display: inline;
+  color: #f6f6f6;
+  padding: 5px;
+}
+
+#signOut {
+  vertical-align: -webkit-baseline-middle;
+  color: white;
+  background-color: aquamarine;
+  border-radius: 50%;
+  text-decoration: none;
+}
+
+#welcome {
+  margin-top: 50px;
+}
