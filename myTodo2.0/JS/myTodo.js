@@ -89,8 +89,10 @@ MVC.model = function () {
     addChild(parent, child) {
       parent.appendChild(child);
       if(this.getUser()) { // 有登录
-        this.saveThings();  //保存信息到json
-      }
+      	var M = MVC.model;
+      	setTimeout(function() {
+      		M.saveThings()}, 500)//完全出现后保存信息到json       
+      	}
     },
 
     getUser() {
