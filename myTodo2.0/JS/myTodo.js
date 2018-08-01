@@ -1,15 +1,5 @@
 var MVC = {};
 
-function getLocalStroage() {
-  if (typeof localStorage == 'object') {
-    return localStorage;
-  } else if (typeof globalStorage == 'object') {
-    return globalStorage[location.host];
-  } else {
-    throw new Error('Local storage not available.');
-  }
-};
-
 var EventUtil = {
   getEvent: function(event) {
     return event ? event : window.event;
@@ -45,20 +35,18 @@ MVC.model = function () {
   return {
     //存在用户名就读取信息
     initData(name) {
+      var data,
+      _self = this;
       $.ajax({
         type:"get",
         url: "http://localhost:3000/users/" + name,
         async: false,
         dataType: "json",
-        success: function(deta) {
-          var things = deta.things;
-          var showThings = document.getElementById('show-things');
-          if (things) {
-            showThings.innerHTML = things;
-
-          }
+        success: function(data) {
+          _self.data = data;
         }
       });
+      return _self.data;
     },
 
     //如果存在名字保存数据
@@ -96,8 +84,18 @@ MVC.model = function () {
     },
 
     getUser() {
-      var storage = getLocalStroage();
+      var storage = this.getLocalStroage();
       return storage.getItem('user');
+    },
+
+    getLocalStroage() {
+      if (typeof localStorage == 'object') {
+        return localStorage;
+      } else if (typeof globalStorage == 'object') {
+        return globalStorage[location.host];
+      } else {
+        throw new Error('Local storage not available.');
+      }
     }
   }
 
@@ -149,14 +147,11 @@ MVC.view = function() { // view层主导视图的创建
                                   todoFeatures +
                                   todoFoot
                               '</div>';
+    },
 
-      // 初始化Model数据
-      var name = M.getUser();
-
-      if (name) {
-        M.initData(name);
-        this.showUser(name);
-      }
+    // 渲染model返回的所有的事情
+    addThingsModel(showThings, things) {
+      showThings.innerHTML = things;  // 添加到showThings框内，在页面显示
     },
 
     /*显示登录用户*/
@@ -280,7 +275,7 @@ MVC.view = function() { // view层主导视图的创建
     },
 
     unlogin(welcomeParagraph, loginButton) {
-      var storage = getLocalStroage();
+      var storage = M.getLocalStroage();
       storage.user = '';
       welcomeParagraph.innerHTML = "<p>Hello!</p><p>MyTodo only save things when you loigned!</p>";
       loginButton.innerHTML = '登录';
@@ -321,10 +316,28 @@ MVC.controller = function () {
   var M = MVC.model;
 
   var C = {
-    start: function () {
+    start: function () {  // 渲染视图
+
       V.initTodo();  // 初始化视图
-      this.__listen();
+      this.showThings();  // 在视图中添加要做的事情
+      this.__listen();  // 添加监听事件
     },    
+
+    showThings: function () { // 添加事情显示
+      // 初始化Model数据
+      var name = M.getUser();
+
+      if (name) {
+        var data = M.initData(name);
+        if (data) {
+          showThings = document.getElementById('show-things');
+          if(data.things) {
+            V.addThingsModel(showThings, data.things);
+          }
+        }
+        V.showUser(name);
+      }
+    },
 
     __listen: function () {      
       var input = document.getElementById('input');
@@ -336,7 +349,7 @@ MVC.controller = function () {
 
 
       var body = document.getElementsByTagName('body');
-      var storage = getLocalStroage();
+      var storage = M.getLocalStroage();
       var signOut = document.getElementById('signOut');
       var ID = 'all';
 
@@ -582,6 +595,8 @@ MVC.controller = function () {
               V.showFeature();
               V.showNumber(showThings);
             }
+
+            M.saveThings(); // 保存修改
           });   
 
          }
@@ -600,8 +615,7 @@ MVC.controller = function () {
   }  
 
   return C;
-
-}()
+}();
 
 var C = MVC.controller;
 C.start();

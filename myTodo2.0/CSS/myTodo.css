@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  background-color: rgba(255, 235, 59, 0.19);
+  background-color: rgba(255, 198, 177, 0.09);
 }
 
 h1 {
@@ -8,7 +8,7 @@ h1 {
   font-family: MS Mincho, DFKai-SB;
   text-shadow: 5px 1px 10px #dad8d8;
   line-height: 1px;
-  color: rgba(255, 98, 0, 0.33);
+  color: rgba(243, 143, 112, 0.42);
   display: inline-block;
 }
 
@@ -25,7 +25,7 @@ h1 {
 
 #input {
   padding: 12px;
-  box-shadow: 0px 18px 90px rgba(251, 174, 13, 0.42);
+  box-shadow: 0px 18px 90px rgba(251, 90, 13, 0.24);
   color: rgba(56, 43, 42, 0.78);
   font-size:25px;
   width:400px;

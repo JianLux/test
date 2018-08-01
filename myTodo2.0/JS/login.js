@@ -28,7 +28,6 @@ var EventUtil = {
   getTarget: function(event) {
     return event.target || window.srcElement;
   }
-
 };
 
 function getLocalStroage() {
@@ -210,7 +209,6 @@ MVC.controller = function () {
   }  
 
   return C;
-
 }()
 
 var C = MVC.controller;
